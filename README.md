@@ -18,3 +18,9 @@
 - The cause of this bug is in line 75. In this if loop, the new customer ID will only be created, and no deposit or withdrawal will be executed. Therefore, add the execution of deposit or withdraw to the script for creating a new account.
 
 - After the repair is completed, you need to assign a value to transaction_counter, so assign a value to transaction_counter in line 121.
+
+## Code Modification 4
+
+- After adding the second set of data, the average output is found to be 3750, instead of the expected 7500.
+
+- Lines 121 and 122 had indentation errors, which were corrected to get the correct output(7500).

@@ -118,8 +118,8 @@ for customer_id, data in customer_data.items():
     for transaction in data['transactions']:
         amount, type = transaction
         print(f"{type.capitalize():>16}:{amount:>12}")
-    transaction_counter += transaction_count
-    average_transaction_amount = total_transaction_amount / transaction_counter
+transaction_counter += transaction_count
+average_transaction_amount = total_transaction_amount / transaction_counter
     
 print(f"AVERAGE TRANSACTION AMOUNT: {average_transaction_amount}")
 
