@@ -55,11 +55,14 @@ with open(DATA_FILE_PATH, 'r') as csv_file:
 
         ### VALIDATION 2 ###
         # Gets the transaction amount from the third column
-        print(transaction[2])
+        if transaction[1] in valid_transaction_types:
+            pass
+        else:
+            print(f'The transaction type "{transaction[1]}" is invalid.')
         try:
             transaction_amount = float(transaction[2])
         except ValueError:
-            print("Value Error")
+            print(f'"{transaction[2]}" is invalid transaction amount')
         finally:
             print("code test over")
         if is_valid_record:
