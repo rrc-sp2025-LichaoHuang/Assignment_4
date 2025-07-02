@@ -55,8 +55,13 @@ with open(DATA_FILE_PATH, 'r') as csv_file:
 
         ### VALIDATION 2 ###
         # Gets the transaction amount from the third column
-        transaction_amount = float(transaction[2])
-
+        print(transaction[2])
+        try:
+            transaction_amount = float(transaction[2])
+        except ValueError:
+            print("Value Error")
+        finally:
+            print("code test over")
         if is_valid_record:
             # Initialize the customer's account balance if it doesn't 
             # already exist
