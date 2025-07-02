@@ -24,3 +24,9 @@
 - After adding the second set of data, the average output is found to be 3750, instead of the expected 7500.
 
 - Lines 121 and 122 had indentation errors, which were corrected to get the correct output(7500).
+
+## Code Modification 5
+
+- During the test, I found that the balance of some accounts was incorrect.
+
+- After testing, it was found that the spelling of withdraw was wrong. After correction, the correct balance was obtained.

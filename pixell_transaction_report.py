@@ -20,6 +20,7 @@ transaction_counter = 0
 total_transaction_amount = 0
 is_valid_record = True
 average_transaction_amount = 0
+invalid_type = ''
 
 # Clears the terminal
 os.system('cls' if os.name == 'nt' else 'clear')
@@ -57,7 +58,7 @@ with open(DATA_FILE_PATH, 'r') as csv_file:
             pass
         else:
             is_valid_record = False
-            print(f'The transaction type "{transaction[1]}" is invalid.')
+            invalid_type = f'[The transaction type "{transaction[1]}" is invalid.]'
         ### VALIDATION 2 ###
         # Gets the transaction amount from the third column
 
@@ -65,9 +66,7 @@ with open(DATA_FILE_PATH, 'r') as csv_file:
             transaction_amount = float(transaction[2])
         except ValueError:
             is_valid_record = False
-            print(f'"{transaction[2]}" is invalid transaction amount')
-        finally:
-            print("code test over")
+            invalid_type = f'["{transaction[2]}" is invalid transaction amount]'
         ### Valid Data Precess ###
         if is_valid_record == True:
             # Initialize the customer's account balance if it doesn't 
@@ -75,11 +74,11 @@ with open(DATA_FILE_PATH, 'r') as csv_file:
             if customer_id not in customer_data:
                 customer_data[customer_id] = {'balance': 0, 'transactions': []}
                 if transaction_type == 'deposit':
-                    customer_data[customer_id]['balance'] += transaction_amount
+                    customer_data[customer_id]['balance'] = customer_data[customer_id]['balance'] + transaction_amount
                     transaction_count += 1
                     total_transaction_amount += transaction_amount
                 else:
-                    customer_data[customer_id]['balance'] += transaction_amount
+                    customer_data[customer_id]['balance'] = customer_data[customer_id]['balance'] - transaction_amount
                     transaction_count += 1
                     total_transaction_amount += transaction_amount
             # Update the customer's account balance based on the 
@@ -88,8 +87,8 @@ with open(DATA_FILE_PATH, 'r') as csv_file:
                 customer_data[customer_id]['balance'] += transaction_amount
                 transaction_count += 1
                 total_transaction_amount += transaction_amount
-            elif transaction_type == 'withdrawal':
-                customer_data[customer_id]['balance'] += transaction_amount
+            elif transaction_type == 'withdraw':
+                customer_data[customer_id]['balance'] = customer_data[customer_id]['balance'] - transaction_amount
                 transaction_count += 1
                 total_transaction_amount += transaction_amount
             
@@ -99,9 +98,9 @@ with open(DATA_FILE_PATH, 'r') as csv_file:
         
         ### COLLECT INVALID RECORDS ###
         if is_valid_record == False:
-            invalid_data = (transaction)
+            invalid_data = (transaction,invalid_type)
             rejected_transactions.append(invalid_data)
-            print(rejected_transactions)
+
 report_title = "PiXELL River Transaction Report"
 print(report_title)
 print('=' * len(report_title))
@@ -110,7 +109,7 @@ print('=' * len(report_title))
 for customer_id, data in customer_data.items():
     balance = data['balance']
 
-    print(f"Customer {customer_id} has a balance of {balance}.")
+    print(f"Customer {customer_id} has a balance of ${balance:,.2f}.")
     
     # Print the transaction history for the customer
     print("Transaction History:")
@@ -121,7 +120,7 @@ for customer_id, data in customer_data.items():
 transaction_counter += transaction_count
 average_transaction_amount = total_transaction_amount / transaction_counter
     
-print(f"AVERAGE TRANSACTION AMOUNT: {average_transaction_amount}")
+print(f"AVERAGE TRANSACTION AMOUNT: ${average_transaction_amount:,.2f}")
 
 rejected_report_title = "REJECTED RECORDS"
 print(rejected_report_title)
