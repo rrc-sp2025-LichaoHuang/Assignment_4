@@ -19,6 +19,7 @@ transaction_count = 0
 transaction_counter = 0
 total_transaction_amount = 0
 is_valid_record = True
+average_transaction_amount = 0
 
 # Clears the terminal
 os.system('cls' if os.name == 'nt' else 'clear')
@@ -73,7 +74,14 @@ with open(DATA_FILE_PATH, 'r') as csv_file:
             # already exist
             if customer_id not in customer_data:
                 customer_data[customer_id] = {'balance': 0, 'transactions': []}
-            
+                if transaction_type == 'deposit':
+                    customer_data[customer_id]['balance'] += transaction_amount
+                    transaction_count += 1
+                    total_transaction_amount += transaction_amount
+                else:
+                    customer_data[customer_id]['balance'] += transaction_amount
+                    transaction_count += 1
+                    total_transaction_amount += transaction_amount
             # Update the customer's account balance based on the 
             # transaction type
             elif transaction_type == 'deposit':
@@ -110,10 +118,9 @@ for customer_id, data in customer_data.items():
     for transaction in data['transactions']:
         amount, type = transaction
         print(f"{type.capitalize():>16}:{amount:>12}")
-try:
+    transaction_counter += transaction_count
     average_transaction_amount = total_transaction_amount / transaction_counter
-except ZeroDivisionError:
-    print('Zero Division Error')
+    
 print(f"AVERAGE TRANSACTION AMOUNT: {average_transaction_amount}")
 
 rejected_report_title = "REJECTED RECORDS"
