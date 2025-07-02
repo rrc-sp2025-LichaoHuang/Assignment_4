@@ -6,7 +6,7 @@ Example:
 """
 
 __author__ = "COMP-1327 Student, Lichao Huang"
-__version__ = ""
+__version__ = "1.0.0"
 __credits__ = "COMP-1327 Faculty"
 
 import csv
@@ -52,20 +52,23 @@ with open(DATA_FILE_PATH, 'r') as csv_file:
         transaction_type = transaction[1]
 
         ### VALIDATION 1 ###
-
-        ### VALIDATION 2 ###
-        # Gets the transaction amount from the third column
         if transaction[1] in valid_transaction_types:
             pass
         else:
+            is_valid_record = False
             print(f'The transaction type "{transaction[1]}" is invalid.')
+        ### VALIDATION 2 ###
+        # Gets the transaction amount from the third column
+
         try:
             transaction_amount = float(transaction[2])
         except ValueError:
+            is_valid_record = False
             print(f'"{transaction[2]}" is invalid transaction amount')
         finally:
             print("code test over")
-        if is_valid_record:
+        ### Valid Data Precess ###
+        if is_valid_record == True:
             # Initialize the customer's account balance if it doesn't 
             # already exist
             if customer_id not in customer_data:
@@ -87,7 +90,10 @@ with open(DATA_FILE_PATH, 'r') as csv_file:
                 (transaction_amount, transaction_type))
         
         ### COLLECT INVALID RECORDS ###
-        
+        if is_valid_record == False:
+            invalid_data = (transaction)
+            rejected_transactions.append(invalid_data)
+            print(rejected_transactions)
 report_title = "PiXELL River Transaction Report"
 print(report_title)
 print('=' * len(report_title))
@@ -104,8 +110,10 @@ for customer_id, data in customer_data.items():
     for transaction in data['transactions']:
         amount, type = transaction
         print(f"{type.capitalize():>16}:{amount:>12}")
-
-average_transaction_amount = total_transaction_amount / transaction_counter
+try:
+    average_transaction_amount = total_transaction_amount / transaction_counter
+except ZeroDivisionError:
+    print('Zero Division Error')
 print(f"AVERAGE TRANSACTION AMOUNT: {average_transaction_amount}")
 
 rejected_report_title = "REJECTED RECORDS"
